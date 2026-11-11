@@ -1,0 +1,23 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment secrets and API keys (CRITICAL)
+.env
+*.env
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Chroma vector database and uploads
+data/chroma/
+data/
+uploads/*.pdf
+uploads/
+
+# VS Code settings
+.vscode/
