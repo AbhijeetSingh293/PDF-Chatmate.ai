@@ -7,7 +7,6 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 echo 'Downloading PDF Chatmate source code...'
@@ -36,12 +35,28 @@ pipeline {
                 bat 'venv\\Scripts\\python.exe -m pytest -v --junitxml=test-results.xml'
             }
         }
+
+        stage('OWASP Dependency Scan') {
+            steps {
+                echo 'Scanning project dependencies for vulnerabilities...'
+
+                dependencyCheck(
+                    odcInstallation: 'DP-Check',
+                    additionalArguments: '--scan . --format HTML --format XML --out dependency-check-report'
+                )
+            }
+        }
     }
 
     post {
         always {
             junit testResults: 'test-results.xml',
                   allowEmptyResults: true
+
+            dependencyCheckPublisher(
+                pattern: 'dependency-check-report/dependency-check-report.xml',
+                skipNoReportFiles: true
+            )
         }
 
         success {
