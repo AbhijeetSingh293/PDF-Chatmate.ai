@@ -57,10 +57,11 @@ stage('OWASP Dependency Scan') {
             junit testResults: 'test-results.xml',
                   allowEmptyResults: true
 
-            dependencyCheckPublisher(
-                pattern: 'dependency-check-report/dependency-check-report.xml',
-                skipNoReportFiles: true
-            )
+            dependencyCheck(
+    odcInstallation: 'DP-Check',
+    nvdCredentialsId: 'nvd-api-key',
+    additionalArguments: '--scan requirements.txt --format HTML --format XML --out dependency-check-report'
+)
         }
 
         success {
