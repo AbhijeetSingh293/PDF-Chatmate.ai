@@ -36,16 +36,20 @@ pipeline {
             }
         }
 
-        stage('OWASP Dependency Scan') {
-            steps {
-                echo 'Scanning project dependencies for vulnerabilities...'
+        
+stage('OWASP Dependency Scan') {
+    steps {
+        echo 'Scanning project dependencies for vulnerabilities...'
 
-                dependencyCheck(
-                    odcInstallation: 'DP-Check',
-                    additionalArguments: '--scan . --format HTML --format XML --out dependency-check-report'
-                )
-            }
-        }
+        bat 'if not exist dependency-check-report mkdir dependency-check-report'
+
+        dependencyCheck(
+            odcInstallation: 'DP-Check',
+            additionalArguments: '--scan requirements.txt --format HTML --format XML --out dependency-check-report'
+        )
+    }
+}
+
     }
 
     post {
