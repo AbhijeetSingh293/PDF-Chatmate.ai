@@ -1,0 +1,21 @@
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt .
+
+RUN python -m pip install --upgrade pip && python -m pip install --no-cache-dir -r requirements.txt
+
+# Copy backend source code
+COPY backend/ ./backend/
+
+# Create directories for persistent application data
+RUN mkdir -p /app/data/chroma /app/uploads
+
+# Expose FastAPI port
+EXPOSE 8000
+
+# Start FastAPI
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]

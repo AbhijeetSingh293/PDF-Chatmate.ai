@@ -1,0 +1,15 @@
+
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.git/
+.github/
+.vscode/
+.env
+*.env
+uploads/
+data/
+dependency-check-report/
