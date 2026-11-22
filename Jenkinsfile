@@ -68,6 +68,38 @@ pipeline {
             }
         }
 
+
+        // Stage 7: Build and Deploy using Docker Compose
+        stage('Build and Deploy') {
+            steps {
+                script {
+                    withCredentials([
+                        string(
+                            credentialsId: 'groq-api-key',
+                            variable: 'GROQ_API_KEY'
+                        )
+                    ]) {
+                        try {
+                            echo 'Preparing environment for deployment...'
+
+                            bat 'if exist .env del .env'
+                            bat 'echo GROQ_API_KEY=%GROQ_API_KEY%> .env'
+                            bat 'echo LLM_MODEL=openai/gpt-oss-120b>> .env'
+
+                            echo 'Building and deploying PDF Chatmate...'
+
+                            bat 'docker compose -p pdf_chatmate up -d --build --force-recreate'
+
+                        } finally {
+                            echo 'Cleaning up temporary environment file...'
+                            bat 'if exist .env del .env'
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
     // Publish test and security reports
