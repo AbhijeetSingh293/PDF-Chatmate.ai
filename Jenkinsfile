@@ -56,6 +56,18 @@ pipeline {
                 )
             }
         }
+
+        
+        // Stage 6: Verify Docker connectivity
+        stage('Check Docker Access') {
+            steps {
+                echo 'Checking Docker access from Jenkins...'
+                bat 'docker --version'
+                bat 'docker compose version'
+                bat 'docker info'
+            }
+        }
+
     }
 
     // Publish test and security reports
