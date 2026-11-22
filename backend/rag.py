@@ -10,8 +10,10 @@ CHROMA_DIR = os.getenv("CHROMA_PERSIST_DIR", "./data/chroma")
 os.makedirs(CHROMA_DIR, exist_ok=True)
 
 client = chromadb.PersistentClient(path=CHROMA_DIR)
+
 embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-    model_name="all-MiniLM-L6-v2"
+    model_name="all-MiniLM-L6-v2",
+    device="cpu"
 )
 
 def get_collection(name: str = "pdf_chatmate"):
